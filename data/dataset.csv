@@ -1,0 +1,2 @@
+"inter_api_access_duration(sec)","api_access_uniqueness","sequence_length(count)","vsession_duration(min)","ip_type","num_sessions","num_users","num_unique_apis","source","behavior_type"
+0.1,0.1,1,0.1,1,1,1,1,1,0
