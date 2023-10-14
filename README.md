@@ -1,23 +1,72 @@
+# ML for Threat Prediction
 
-# Enhancing Machine Learning Predictive Models for Anomaly Detection in API Security
-This project focused on enhancing the accuracy of machine learning models for predicting anomalous behavior in API security. The primary objective was to predict the 'score' extracted from the 'behavior_type' variable in a high-dimensional dataset. As a key researcher, I implemented Principal Component Analysis (PCA) to reduce the dimensions of the original dataset and create a new feature set with features that are relatively independent of each other. I developed four methodologies to generate the value of our feature 'score' and designed the architecture of the deep neural network used for predicting the continuous value of score. The machine learning models used for two-class prediction were Support Vector Machines (SVMs) and Random Forest. The project resulted in a more accurate prediction of the 'score' variable, demonstrating the effectiveness of PCA and different methodologies in enhancing the accuracy of machine learning models for anomaly detection in API security.
+This project uses a Deep Neural Network (DNN) to predict a security score based on various API access and user session metrics. The original analysis was performed in a Jupyter Notebook and has been refactored into a structured, command-line-driven Python application.
 
-This code extracts the source data and runs a deep neural network to predict the scores based on the algorithm discussed in the paper.
+## Project Overview
 
-Box #1 imports the relevant libraries.
+The tool performs the following steps:
+1.  **Loads** tabular data representing user and API behavior.
+2.  **Preprocesses** the data using StandardScaler and applies Principal Component Analysis (PCA) for dimensionality reduction.
+3.  **Trains** a Keras-based DNN on the processed data to predict a security score.
+4.  **Saves** the trained model for future use.
+5.  **Predicts** scores on new data using the pre-trained model.
 
-Box #2 imports the data, expands the data using the variable 'expand' and 'iteration_count', and runs the 2 component PCA over the data.
+---
 
-Box #3 generates the additional score column using user-defined distributions (chosen from 4 distributions)
+## Installation
 
-Box #4 generates the test and training data
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/adityasengar/ML-for-threat-prediction.git
+    cd ML-for-threat-prediction
+    ```
 
-Box #5 runs the n-componenet PCA analysis and redefines the test and training data based on the results from PCA
+2.  It is recommended to use a virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
 
-Box #6 generates the deep neural network and compiles it
+3.  Install the required dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *(Note: This project requires TensorFlow. If you have a compatible GPU, `tensorflow` is recommended. Otherwise, you can use `tensorflow-cpu`.)*
 
-Box #7 Generates the accuracy scores.
+---
 
-Box #8 genertes the distribution of data in each feature set and scatter plot between few variables.
+## Usage
 
-Box #9 plots the accuracy as the dataset increases 
+The application is controlled via `main.py` and has two primary modes: `train` and `predict`.
+
+### Training the Model
+
+To train the model on the dataset and save it, run the following command:
+
+```bash
+python main.py --mode train
+```
+
+This will:
+- Load data from `data/dataset.csv`.
+- Train the model for 10 epochs.
+- Save the trained model to `threat_model.h5`.
+
+### Making Predictions
+
+Once the model is trained, you can use it to make predictions.
+
+```bash
+python main.py --mode predict
+```
+
+This will:
+- Load the pre-trained model from `threat_model.h5`.
+- Load the dataset and run inference on the test split.
+- Print the evaluation metrics (MAE, R2 score) for the predictions.
+
+### Command-Line Arguments
+
+-   `--mode`: `train` or `predict`. (Required)
+-   `--data_path`: Path to the input dataset. (Default: `data/dataset.csv`)
+-   `--model_path`: Path to save (in train mode) or load (in predict mode) the model file. (Default: `threat_model.h5`)
